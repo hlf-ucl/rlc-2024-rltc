@@ -1,0 +1,22 @@
+Bootstrap: docker
+From: python:3.10.3-slim-bullseye
+
+%files
+    requirements.txt /experiments/requirements.txt
+    game_ext /experiments/game_ext
+    configs /experiments/configs
+    seeds /experiments/seeds
+
+%environment
+    # For finding the experiments module game_ext
+    export PYTHONPATH="${PYTHONPATH}:/experiments/"
+
+%post
+    pip3 install -r /experiments/requirements.txt
+
+%runscript
+    python3 -m game_ext.main "$@"
+
+%help
+    Container for running consensus experiments.
+
